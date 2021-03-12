@@ -150,3 +150,125 @@ console.log(`Factorial of ${value} is:`, factorial(value));
 console.log(`\n`);
 
 // Find a way out of the maze
+/*
+let mySmallMaze = [
+    [' ', ' ', ' '],
+    [' ', '*', ' '],
+    [' ', ' ', 'e']
+];
+
+let maze = [
+    [' ', ' ', ' ', '*', ' ', ' ', ' '],
+    ['*', '*', ' ', '*', ' ', '*', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', '*', '*', '*', '*', '*', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', 'e']
+];
+*/
+// start at 1, 1. Move to 1,2 or 2,1. If next is a star change direction
+let mySmallMaze = [
+  [' ', ' ', ' '],
+  [' ', '*', ' '],
+  [' ', ' ', 'e']
+];
+
+let escape = function(maze, pos=0, row=0, col=0, dir='S' , path = []) {
+  if (col < 0 || row < 0) return;
+  else if (col >= maze[0].length || row >= maze.length) return;
+  
+  path[pos] = dir;
+  pos++;
+
+  if(maze[row][col] === 'e'){
+    console.log(path);
+    return;
+  }
+
+  if(maze[row][col] === ' '){
+    // The current cell is free. Mark it as visited
+    maze[row][col] = 's';
+    // Invoke recursion or explore all possible directions
+    escape(maze, pos, row - 1, col, 'U', path); // Up
+    escape(maze, pos, row, col + 1, 'R', path); // Right
+    escape(maze, pos, row + 1, col, 'D', path); // Down
+    escape(maze, pos, row, col - 1, 'L', path); // Left
+  }
+  // Remove the last direction from the path
+  pos--;
+}
+
+console.log(`\nEscape Maze`)
+escape(mySmallMaze)
+
+let maze = [
+    [' ', ' ', ' ', '*', ' ', ' ', 'e'],
+    ['*', '*', ' ', '*', ' ', '*', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', '*', '*', '*', '*', '*', ' '],
+    [' ', ' ', 'e', ' ', ' ', ' ', ' ']
+];
+
+escape = function(maze, pos=0, row=0, col=0, dir='S' , path = []) {
+  if (col < 0 || row < 0) return;
+  else if (col >= maze[0].length || row >= maze.length) return;
+  
+  path[pos] = dir;
+  pos++;
+
+  if(maze[row][col] === 'e'){
+    console.log(path);
+    return;
+  }
+
+  if(maze[row][col] === ' '){
+    // The current cell is free. Mark it as visited
+    maze[row][col] = 's';
+    // Invoke recursion ot explore all possible directions
+    escape(maze, pos, row - 1, col, 'U', path); // Up
+    escape(maze, pos, row, col + 1, 'R', path); // Right
+    escape(maze, pos, row + 1, col, 'D', path); // Down
+    escape(maze, pos, row, col - 1, 'L', path); // Left
+    // Mark back the current cell as free
+    maze[row][col] = ' ';
+  }
+  // Remove the last direction from the path
+  pos--;
+}
+
+console.log(`\nEscape Maze show all routes`)
+escape(maze)
+
+function anagram(word) {
+    let results = []; // store the results in an array
+    // base case
+    if (word.length <= 1) {
+        return [word];
+    }
+    const str = word.split(''); // splits word into an array of single letters
+    // console.log('str =', str); 
+    str.forEach((letter, idx) => {
+        let charLeft = [...str.slice(0, idx), ...str.slice(idx + 1)].join('');
+        const permutations = anagram(charLeft);
+        permutations.forEach(permutation => {
+            results.push(letter + permutation);
+        });
+    });
+    return results;
+}
+
+console.log(`\nANAGRAM`)
+console.log(anagram('east')); // returns 24 strings
+
+// Binary representation
+function binary(num) {
+    // base case
+    if (num < 1) {
+        return '';
+    } else {
+        return binary(num / 2) + Math.floor(num % 2);
+    }
+}
+
+console.log(`\nBinary Representation`)
+console.log(binary(3)); // 11
+console.log(binary(25)); // 11001
